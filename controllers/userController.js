@@ -17,7 +17,7 @@ const getUsers = async (req, res) => {
 
 const addUser = async (req, res) => {
     const body = await getBody(req);
-    let newUser =JSON.parse(body).user;
+    let newUser =JSON.parse(body);
     console.log("new user",newUser);
     
     let msg = await userService.addUser(req, res, newUser);
@@ -27,7 +27,7 @@ const updateUser = async (req,res) =>{
      
     const body = await getBody(req);
     console.log('body : ',body.user);
-    let updatedUser = JSON.parse(body).user;
+    let updatedUser = JSON.parse(body);
     console.log("updated user :" ,updatedUser);
     
     let msg = await userService.updateUser(req,res,updatedUser);
@@ -36,7 +36,7 @@ const updateUser = async (req,res) =>{
 const deleteUser = async (req,res) =>{
      
     const body = await getBody(req);
-    let deleteUser = JSON.parse(body).user;
+    let deleteUser = JSON.parse(body);
     let msg = await userService.deleteUser(req,res,deleteUser);
     res.end(msg)
 }
