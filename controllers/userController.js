@@ -24,19 +24,31 @@ const addUser = async (req, res) => {
     res.end(msg);
 }
 const updateUser = async (req,res) =>{
+     const { id } = req.params;
+    
+    if (!id) {
+        res.writeHead(400);
+        return res.end('User ID is required in URL (e.g., /users/123)');
+    }
      
     const body = await getBody(req);
     console.log('body : ',body.user);
     let updatedUser = JSON.parse(body);
-    console.log("updated user :" ,updatedUser);
+    
+    updatedUser.id = id
     
     let msg = await userService.updateUser(req,res,updatedUser);
     res.end(msg)
 }
 const deleteUser = async (req,res) =>{
-     
-    const body = await getBody(req);
-    let deleteUser = JSON.parse(body);
+    const { id } = req.params;
+    
+    if (!id) {
+        res.writeHead(400);
+        return res.end('User ID is required in URL (e.g., /users/123)');
+    }
+    const deleteUser = { id: id }; 
+    
     let msg = await userService.deleteUser(req,res,deleteUser);
     res.end(msg)
 }
