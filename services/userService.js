@@ -23,7 +23,7 @@ const addUser =async (req,res, user)=>{
             name:user.name
         }
         db.push(newUser);
-        await fs.writeFile(pathName,JSON.stringify(db));
+        await fs.writeFile(pathName,JSON.stringify(db,null,2));
         res.end('User added successfully');
     }
 }
