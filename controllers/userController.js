@@ -17,7 +17,7 @@ const getUsers = async (req, res) => {
     res.end(users);
 };
 const showUsers = async (req, res) => {
-    res.writeHead(200);
+    
     let users = await userService.showAllUsers(req, res);
 
     return users;

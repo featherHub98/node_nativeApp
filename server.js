@@ -3,6 +3,7 @@ const url = require('url');
 const path = require('path');
 const fs = require('fs');
 const ejs = require('ejs');
+const  {UserException}  = require('./exceptions/userException');
 const port = 3000;
 const userController = require('./controllers/userController');
 
@@ -38,13 +39,22 @@ const server = http.createServer(async (req, res) => {
            // const htmlContent = fs.readFileSync(viewPath, 'utf-8');
            //res.writeHead(200, { 'Content-Type': 'text/html' });
            // return res.end(htmlContent);
-           const users = await userController.showUsers(req, res); // Assuming you have a function to get users
-           
-            const html = await ejs.render(fs.readFileSync('./view/index.ejs', 'utf8'),  { users} );
-            console.log("rendered ", html);
-            
-            //res.writeHead(200, { 'Content-Type': 'text/html' });
-             return res.end(html);
+           try{
+            const users = await userController.showUsers(req, res); 
+            if(!users || users.length === 0) throw new UserException('No users found');
+            const html = await ejs.render(fs.readFileSync('./views/index.ejs', 'utf8'), { users } );
+            res.writeHead(200, {'Content-Type': 'text/html'});
+            res.end(html);
+        }catch(err){
+            if(err instanceof UserException){
+                res.writeHead(404, {'Content-Type': 'text/html'});
+                res.end('<h1>No users found</h1>');
+            }
+            else if (err.code === 'ENOENT') {
+                res.writeHead(500, {'Content-Type': 'text/html'});
+                res.end('<h1>Template file not found</h1>');
+            }
+        }
         }
         else if (pathname === '/users' && req.method === 'GET') {
             return await userController.getUsers(req, res);
