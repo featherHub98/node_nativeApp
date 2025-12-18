@@ -2,6 +2,7 @@ const http = require('http');
 const url = require('url');
 const path = require('path');
 const fs = require('fs');
+const ejs = require('ejs');
 const port = 3000;
 const userController = require('./controllers/userController');
 
@@ -33,10 +34,17 @@ const server = http.createServer(async (req, res) => {
     try {
         
         if (pathname === '/' && req.method === 'GET') {
-            const viewPath = path.join(__dirname, './view/index.ejs');
-            const htmlContent = fs.readFileSync(viewPath, 'utf-8');
-            res.writeHead(200, { 'Content-Type': 'text/html' });
-            return res.end(htmlContent);
+           // const viewPath = path.join(__dirname, './view/index.ejs');
+           // const htmlContent = fs.readFileSync(viewPath, 'utf-8');
+           //res.writeHead(200, { 'Content-Type': 'text/html' });
+           // return res.end(htmlContent);
+           const users = await userController.getUsers(req, res); // Assuming you have a function to get users
+           
+            const html = await ejs.render(fs.readFileSync('./view/index.ejs', 'utf8'),  {users} );
+            console.log("rendered ", html);
+            
+            //res.writeHead(200, { 'Content-Type': 'text/html' });
+             res.end(html);
         }
         else if (pathname === '/users' && req.method === 'GET') {
             return await userController.getUsers(req, res);

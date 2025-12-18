@@ -5,8 +5,9 @@ const pathName=path.join(__dirname,'../db.json');
 
 const getAllUsers = async (req,res) => {
     const data = await fs.readFile(pathName, 'utf-8');
-    console.log('the data : ',data);
-    res.end(data);
+   
+   // res.end(data);
+   return data;
 };
 
 const addUser =async (req,res, user)=>{

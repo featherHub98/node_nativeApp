@@ -1,3 +1,4 @@
+const { log } = require('console');
 const userService = require('../services/userService');
 const url = require('url');
 
@@ -12,7 +13,8 @@ const getBody = (req) => {
 const getUsers = async (req, res) => {
     res.writeHead(200);
     let users = await userService.getAllUsers(req, res);
-    res.end(users);
+
+    return users;
 };
 
 const addUser = async (req, res) => {
@@ -25,7 +27,6 @@ const addUser = async (req, res) => {
 }
 const updateUser = async (req,res) =>{
      const { id } = req.params;
-    
     if (!id) {
         res.writeHead(400);
         return res.end('User ID is required in URL (e.g., /users/123)');
