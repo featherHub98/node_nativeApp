@@ -40,11 +40,11 @@ const server = http.createServer(async (req, res) => {
            // return res.end(htmlContent);
            const users = await userController.getUsers(req, res); // Assuming you have a function to get users
            
-            const html = await ejs.render(fs.readFileSync('./view/index.ejs', 'utf8'),  {users} );
+            const html = await ejs.render(fs.readFileSync('./view/index.ejs', 'utf8'),  { users} );
             console.log("rendered ", html);
             
             //res.writeHead(200, { 'Content-Type': 'text/html' });
-             res.end(html);
+             return res.end(html);
         }
         else if (pathname === '/users' && req.method === 'GET') {
             return await userController.getUsers(req, res);

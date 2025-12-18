@@ -7,7 +7,7 @@ const getAllUsers = async (req,res) => {
     const data = await fs.readFile(pathName, 'utf-8');
    
    // res.end(data);
-   return data;
+   return JSON.parse(data);
 };
 
 const addUser =async (req,res, user)=>{
