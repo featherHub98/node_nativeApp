@@ -5,6 +5,10 @@ const pathName=path.join(__dirname,'../db.json');
 
 const getAllUsers = async (req,res) => {
     const data = await fs.readFile(pathName, 'utf-8');
+    res.end(data);
+};
+const showAllUsers = async (req,res) => {
+    const data = await fs.readFile(pathName, 'utf-8');
    
    // res.end(data);
    return JSON.parse(data);
@@ -56,4 +60,4 @@ const deleteUser = async (req,res,user)=>{
     }
 }
 
-module.exports={getAllUsers, addUser,updateUser,deleteUser};
+module.exports={getAllUsers, addUser,updateUser,deleteUser,showAllUsers};

@@ -13,6 +13,12 @@ const getBody = (req) => {
 const getUsers = async (req, res) => {
     res.writeHead(200);
     let users = await userService.getAllUsers(req, res);
+    console.log('users in controller : ',users);
+    res.end(users);
+};
+const showUsers = async (req, res) => {
+    res.writeHead(200);
+    let users = await userService.showAllUsers(req, res);
 
     return users;
 };
@@ -56,4 +62,4 @@ const deleteUser = async (req,res) =>{
 
 
 
-module.exports = { getUsers, addUser,updateUser,deleteUser };
+module.exports = { getUsers, addUser,updateUser,deleteUser ,showUsers};

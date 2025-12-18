@@ -38,7 +38,7 @@ const server = http.createServer(async (req, res) => {
            // const htmlContent = fs.readFileSync(viewPath, 'utf-8');
            //res.writeHead(200, { 'Content-Type': 'text/html' });
            // return res.end(htmlContent);
-           const users = await userController.getUsers(req, res); // Assuming you have a function to get users
+           const users = await userController.showUsers(req, res); // Assuming you have a function to get users
            
             const html = await ejs.render(fs.readFileSync('./view/index.ejs', 'utf8'),  { users} );
             console.log("rendered ", html);
