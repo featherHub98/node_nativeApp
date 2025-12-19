@@ -3,6 +3,7 @@ const url = require('url');
 const path = require('path');
 const fs = require('fs');
 const ejs = require('ejs');
+const handlebars = require('handlebars');
 const  {UserException}  = require('./exceptions/userException');
 const port = 3000;
 const userController = require('./controllers/userController');
@@ -35,17 +36,16 @@ const server = http.createServer(async (req, res) => {
     try {
         
         if (pathname === '/' && req.method === 'GET') {
-           // const viewPath = path.join(__dirname, './view/index.ejs');
-           // const htmlContent = fs.readFileSync(viewPath, 'utf-8');
-           //res.writeHead(200, { 'Content-Type': 'text/html' });
-           // return res.end(htmlContent);
+           
            try{
             const users = await userController.showUsers(req, res); 
             if(!users || users.length === 0) throw new UserException('No users found');
-            const html = await ejs.render(fs.readFileSync('./views/index.ejs', 'utf8'), { users } );
+            const templateSource = fs.readFileSync('./views/index.hbs', 'utf8');
+            const template = handlebars.compile(templateSource);
+            const html = template({ users });
             res.writeHead(200, {'Content-Type': 'text/html'});
             res.end(html);
-        }catch(err){
+            }catch(err){
             if(err instanceof UserException){
                 res.writeHead(404, {'Content-Type': 'text/html'});
                 res.end('<h1>No users found</h1>');
