@@ -34,6 +34,17 @@ const server = http.createServer(async (req, res) => {
     req.query = queryParams;
     
     try {
+        // Serve static files (CSS, JS, etc.)
+        if (pathname === '/style.css' && req.method === 'GET') {
+            try {
+                const css = fs.readFileSync('./views/style.css', 'utf8');
+                res.writeHead(200, { 'Content-Type': 'text/css' });
+                return res.end(css);
+            } catch (err) {
+                res.writeHead(404, { 'Content-Type': 'text/plain' });
+                return res.end('CSS file not found');
+            }
+        }
         
         if (pathname === '/' && req.method === 'GET') {
            
