@@ -8,7 +8,6 @@ const  {UserException}  = require('./exceptions/userException');
 const port = 3000;
 const userController = require('./controllers/userController');
 
-// Super compact helper
 const p = (req) => {
     const url = new URL(req.url, `http://${req.headers.host}`);
     const q = Object.fromEntries(url.searchParams);
@@ -34,7 +33,6 @@ const server = http.createServer(async (req, res) => {
     req.query = queryParams;
     
     try {
-        // Serve static files (CSS, JS, etc.)
         if (pathname === '/style.css' && req.method === 'GET') {
             try {
                 const css = fs.readFileSync('./views/style.css', 'utf8');

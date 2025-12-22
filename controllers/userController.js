@@ -1,19 +1,31 @@
 const { log } = require('console');
 const userService = require('../services/userService');
 const url = require('url');
-
+// body parser for urlencoded and json
 const getBody = (req) => {
     return new Promise((resolve) => {
         let body = '';
         req.on('data', chunk => body += chunk);
-        req.on('end', () => resolve(body));
+        req.on('end', () => {
+            if (req.headers['content-type'] === 'application/x-www-form-urlencoded') {
+                const params = new URLSearchParams(body);
+                const parsedBody = {};
+                for (const [key, value] of params) {
+                    parsedBody[key] = value;
+                }
+                console.log('parsedBody : ',parsedBody);
+                resolve(JSON.stringify(parsedBody));
+            }
+            else {
+                resolve(body);
+            }
+        });
     });
 };
 
 const getUsers = async (req, res) => {
    
     let users = await userService.getAllUsers(req, res);
-    console.log('users in controller : ',users);
     res.end(users);
 };
 

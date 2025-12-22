@@ -9,16 +9,16 @@
 <body>
     <div class="container">
         <h1>User Management System</h1>
-        
+        <!-- make all fetch from form actions -->
         <div class="success-message" id="successMessage"></div>
         <div class="error-message" id="errorMessage"></div>
         
         <div class="form-section">
             <h2>Add New User</h2>
-            <form id="userForm">
+            <form id="userForm" action="/users" method="POST">
                 <div class="form-group">
-                    <input type="text" id="name" placeholder="Full Name" required>
-                    <input type="email" id="email" placeholder="Email Address" required>
+                    <input type="text" id="name" name="name" placeholder="Full Name" required>
+                    <input type="email" id="email" name="email" placeholder="Email Address" pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" required >
                     <button type="submit">Add User</button>
                 </div>
             </form>
@@ -43,9 +43,15 @@
                         <td>{{email}}</td>
                         <td>
                             <div class="actions">
-                                <button class="update-btn" data-id="{{id}}" data-name="{{name}}" data-email="{{email}}">Edit</button>
-                                <button class="delete-btn" onclick="deleteUser('{{id}}')" data-id="{{id}}">Delete</button>
-                            </div>
+                    
+                    <form action="/users/{{id}}" method="GET" style="display: inline;">
+                        <button type="submit">Edit</button>
+                    </form>
+                  
+                    <form action="/users/{{id}}" method="POST" style="display: inline;">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <button type="submit">Delete</button>
+                    </form>
                         </td>
                     </tr>
                     {{/each}}
@@ -114,7 +120,7 @@
             }
         };
 
-        document.getElementById('userForm').addEventListener('submit', async (e) => {
+       /* document.getElementById('userForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const name = document.getElementById('name').value.trim();
             const email = document.getElementById('email').value.trim();
@@ -139,7 +145,7 @@
                 showError('Error adding user');
                 console.error('Error:', error);
             }
-        });
+        });*/
 
         const loadUsers = async () => {
             try {
